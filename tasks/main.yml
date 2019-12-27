@@ -28,23 +28,10 @@
       tags:
         - gitter
 
-    - name: Install pidof package
-      homebrew:
-        name: pidof
-      tags:
-        - gitter
-
-    - name: Check program running
-      register: gitter_running
-      failed_when: False
-      changed_when: gitter_running.stdout | length > 0 | bool
-      command: pidof Gitter
-      tags:
-        - gitter
-
-    - name: Fact program running
-      set_fact:
-        gitter_started: "{{ gitter_running.stdout_lines | length > 0 | bool }}"
+    - name: Start application
+      when: gitter_started
+      changed_when: False
+      command: open -j /Applications/Gitter.app
       tags:
         - gitter
 
