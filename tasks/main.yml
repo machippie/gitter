@@ -1,0 +1,38 @@
+# Standards: 0.1
+---
+- name: Fact gitter user
+  set_fact:
+    gitter_user: "{{ gitter_user | default(homebrew_user) | default(ansible_user_id) }}"
+  tags:
+    - gitter
+
+- become: "{{ (gitter_user != ansible_user_id) | bool }}"
+  become_user: "{{ gitter_user }}"
+  block:
+    - name: Install required package
+      ignore_errors: True
+      homebrew_cask:
+        name: gitter
+        greedy: True
+        options: appdir=/Applications
+        accept_external_apps: False
+        state: upgraded
+      tags:
+        - gitter
+
+    - name: Remove quarantine flag
+      register: gitter_quarantine
+      failed_when: gitter_quarantine.rc != 0 and "No such xattr" not in gitter_quarantine.stderr
+      changed_when: gitter_quarantine.rc == 0
+      command: xattr -d com.apple.quarantine /Applications/Gitter.app
+      tags:
+        - gitter
+
+    - name: Start application
+      when: gitter_started
+      changed_when: False
+      command: open -j /Applications/Gitter.app
+      tags:
+        - gitter
+
+...
