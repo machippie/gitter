@@ -1,6 +1,6 @@
 # gitter
 
-[![Build Status](https://cloud.drone.io/api/badges/machippie/gitter/status.svg)](https://cloud.drone.io/machippie/google-chrome)
+[![Build Status](https://cloud.drone.io/api/badges/machippie/gitter/status.svg)](https://cloud.drone.io/machippie/gitter)
 
 Ansible role to configure gitter.
 
