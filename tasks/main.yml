@@ -20,19 +20,12 @@
       tags:
         - gitter
 
-    - name: Remove quarantine flag
-      register: gitter_quarantine
-      failed_when: gitter_quarantine.rc != 0 and "No such xattr" not in gitter_quarantine.stderr
-      changed_when: gitter_quarantine.rc == 0
-      command: xattr -d com.apple.quarantine /Applications/Gitter.app
-      tags:
-        - gitter
-
-    - name: Start application
-      when: gitter_started
-      changed_when: False
-      command: open -j /Applications/Gitter.app
-      tags:
-        - gitter
+- name: Remove quarantine flag
+  register: gitter_quarantine
+  failed_when: gitter_quarantine.rc != 0 and "No such xattr" not in gitter_quarantine.stderr
+  changed_when: gitter_quarantine.rc == 0
+  command: xattr -d com.apple.quarantine /Applications/Gitter.app
+  tags:
+    - gitter
 
 ...
